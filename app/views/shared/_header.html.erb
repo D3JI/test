@@ -2,13 +2,25 @@
   <%= link_to image_tag('../images/image/logo.gif'), home_path%>
 </div>
 <div id="header_link">
-  <ul>
-    <li><%= link_to '站点地图', :controller => 'about', :action => 'map' %></li>
-    <li class="help"><%= link_to '帮助中心', :controller => 'about', :action => 'help' %></li>
-    <li><%= link_to '会员服务', :controller => 'about', :action => 'services' %></li>
-    <li><%= link_to '注册', signup_path %></li>
-    <li><%= link_to '登录', login_path %></li>
-  </ul>
+  <% if is_logged_in? %>
+    <ul>
+      <li><%= link_to '站点地图', :controller => 'about', :action => 'map' %></li>
+      <li class="help"><%= link_to '帮助中心', :controller => 'about', :action => 'help' %></li>
+      <li><%= link_to '会员服务', :controller => 'about', :action => 'services' %></li>
+      <li><%= link_to '博客', signup_path %></li>
+      <li><%= link_to '社区', login_path %></li>
+      <li><%= link_to '控制面板'%></li>
+      <li><%= link_to logged_in_user.username, user_path(:id => logged_in_user)%>[<%= link_to '退出', logout_path %>]</li>
+    </ul>
+  <% else %>
+    <ul>
+      <li><%= link_to '站点地图', :controller => 'about', :action => 'map' %></li>
+      <li class="help"><%= link_to '帮助中心', :controller => 'about', :action => 'help' %></li>
+      <li><%= link_to '会员服务', :controller => 'about', :action => 'services' %></li>
+      <li><%= link_to '注册', signup_path %></li>
+      <li><%= link_to '登录', login_path %></li>
+    </ul>
+  <% end %>
 </div> 
 <div id="header_nav">
   <div id="left_sidebar">

@@ -1,0 +1,44 @@
+<h1>Messages#index</h1>
+<p>Find me in app/views/messages/index.html.erb</p>
+<%= javascript_include_tag :defaults %>
+
+<div class="tabs">
+  <b><%= link_to '收件箱', messages_path(:user_id => @user.id), :class => 'on' %><% unless @recipient_messages %>
+    [<span id="pm_unread"><%= @recipient_messages.size %></span>]<% end %>| </b>
+  <%= link_to '发件箱', message_to_messages_path(:sender_id => @user.id), :method => :get %> |
+  <%= link_to '垃圾箱', trashbox_messages_path(:user_id => @user.id), :method => :put %></div>
+
+<form action="" method="post">
+  <table border="0" cellspacing="0" width="100%">
+    <tbody><tr>
+        <td class="mail_line" align="left" height="40" width="50%"><strong>标题</strong></td>
+        <td class="mail_line" align="left" width="30%"><strong>时间</strong></td>
+        <td class="mail_line" align="left" width="20%"><strong>发件人</strong></td>
+      </tr>
+      <% @recipient_messages.each do |message|%>
+        <tr>
+          <td class="mail_line" height="40" width="7%"><label>
+              <input name="mid[]" id="mid_3255" value="3255" type="checkbox">
+              <!--<%= link_to message.title, message_path(:id => message.id) %>-->
+              <a href="#" id="reply_button" onclick="Element.toggle('reply'); Element.toggle('reply_button'); return false" class="link"><%= message.title %></a>
+          </label></td>
+          <td><%= message.created_at %></td>
+          <td><%= message.sender_id %></td>
+        </tr>
+        <tr>
+          <fieldset id="reply" style="display: none">
+            <legend><%= message.title %></legend>
+            <div> <%= message.content%></div>
+            <div class="mail_admin">
+              <%= link_to '回复', renew_message_path(:id => message.id), :method => :put %> -
+              <a href="mail_new.php?tr=3265">转发</a> - 
+              <%= link_to '删除', message_path(:id => message.id), :method => :delete, :confirm => "Do you sure ?" %> - 
+              <%= link_to '放入垃圾箱', message_delete_message_path(:id => message.id), :method => :delete%> - 
+              <a href="#" onclick="Element.toggle('reply'); Element.toggle('reply_button'); return false">关闭</a>
+            </div>
+          </fieldset>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</form>

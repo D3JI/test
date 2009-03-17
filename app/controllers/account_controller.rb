@@ -1,7 +1,7 @@
 class AccountController < ApplicationController
   def login
     if request.post?
-      reset_session
+     # reset_session
       if @user = User.authenticate(params[:username],params[:password])
         self.logged_in_user = @user
         redirect_to home_path

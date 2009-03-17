@@ -1,4 +1,13 @@
+require 'digest/sha1'
 class User < ActiveRecord::Base
+  has_many :boards, :dependent => :destroy
+  has_many :friendships
+  has_many :friends, :through => :friendships, :class_name => 'User'
+  has_many :albums, :dependent => :destroy
+  has_many :entries, :dependent => :destroy
+  has_many :photos, :dependent => :destroy
+  has_one :avatar, :class_name => 'Photo', :conditions => ["photos.avatar = ?", true]
+
   validates_presence_of :username, :email, :password, :message => '不能为空'
   validates_length_of :username, :within => 3..10, :too_short => '不能少于3个字符', :too_long => '不能超过10个字符'
   validates_uniqueness_of :username, :email, :message => '已经存在'
@@ -40,5 +49,4 @@ class User < ActiveRecord::Base
     string_to_hash = password + 'D3JI' + salt
     Digest::SHA1.hexdigest(string_to_hash)
   end
-
 end
